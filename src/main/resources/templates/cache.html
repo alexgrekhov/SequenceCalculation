@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Кешированные гистограммы</title>
+</head>
+<body>
+<h1>Кешированные гистограммы</h1>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Набор данных</th>
+        <th>Действие</th>
+    </tr>
+    <tr th:each="dataset : ${cached}">
+        <td th:text="${dataset}"></td>
+        <td>
+            <form th:action="@{/params}" method="post">
+                <input type="hidden" name="datasetId" th:value="${dataset}">
+                <input type="hidden" name="bucket" value="10">
+                <button type="submit">Построить гистограмму</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<br>
+<a href="/params"><button type="button">Назад к параметрам</button></a>
+
+</body>
+</html>

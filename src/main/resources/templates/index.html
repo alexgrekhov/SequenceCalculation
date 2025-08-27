@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Start</title>
+</head>
+<body>
+<h1 th:text="'Добро пожаловать'">Добро пожаловать</h1>
+
+<form th:action="@{/params}" method="get">
+    <button type="submit">Начать</button>
+</form>
+
+</body>
+</html>

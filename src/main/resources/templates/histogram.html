@@ -1,0 +1,142 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Гистограмма</title>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Гистограмма</h1>-->
+
+<!--<canvas id="histChart" width="600" height="400"></canvas>-->
+
+<!--<script th:inline="javascript">-->
+<!--    /*<![CDATA[*/-->
+<!--    let labels = /*[[${labels}]]*/ [];-->
+<!--    let data = /*[[${data}]]*/ [];-->
+
+<!--    const ctx = document.getElementById('histChart').getContext('2d');-->
+<!--    new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: labels,-->
+<!--            datasets: [{-->
+<!--                label: 'Частота',-->
+<!--                data: data,-->
+<!--                borderWidth: 1,-->
+<!--                backgroundColor: 'rgba(75, 192, 192, 0.6)'-->
+<!--            }]-->
+<!--        },-->
+<!--        options: {-->
+<!--            responsive: true,-->
+<!--            scales: {-->
+<!--                y: { beginAtZero: true, title: { display: true, text: 'Количество' } },-->
+<!--                x: { title: { display: true, text: 'Диапазон' } }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--    /*]]>*/-->
+<!--</script>-->
+
+<!--<div style="margin-top:20px;">-->
+<!--    <a href="/params"><button type="button">Назад к параметрам</button></a>-->
+<!--    <a href="/cache"><button type="button">Посмотреть кешированные</button></a>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Гистограмма</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Добавляем горизонтальную прокрутку */
+        .chart-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+        canvas {
+            min-width: 1200px; /* ширина для прокрутки */
+        }
+    </style>
+</head>
+<body>
+<h1>Гистограмма</h1>
+
+<div class="chart-container">
+    <canvas id="histChart" height="400"></canvas>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let rawLabels = /*[[${labels}]]*/ [];
+    let data = /*[[${data}]]*/ [];
+
+    // Укорачиваем длинные подписи
+    let labels = rawLabels.map(label => label.toString().substring(0, 8) + '...');
+
+    const ctx = document.getElementById('histChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Частота',
+                data: data,
+                borderWidth: 1,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Количество'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Диапазон'
+                    },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 20,
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (tooltipItems) => {
+                            const index = tooltipItems[0].dataIndex;
+                            return rawLabels[index]; // Показываем полную метку во всплывающей подсказке
+                        }
+                    }
+                }
+            }
+        }
+    });
+    /*]]>*/
+</script>
+
+<div style="margin-top:20px;">
+    <a href="/params"><button type="button">Назад к параметрам</button></a>
+    <a href="/cache"><button type="button">Посмотреть кешированные</button></a>
+</div>
+
+</body>
+</html>
+

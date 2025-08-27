@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head><title>Кеш</title></head>
+<body>
+<h2>Кешированные значения</h2>
+<ul>
+    <li th:each="item : ${cached}" th:text="${item}"></li>
+</ul>
+<a href="/">На главную</a>
+</body>
+</html>
